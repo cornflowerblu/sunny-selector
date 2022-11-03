@@ -24,7 +24,7 @@ jobs:
           cd ../../
           rush update
           npm run compose:up
-          npm run web:start
+          npm run test
 
       - name: Test
         uses: cypress-io/github-action@v4.2.0
