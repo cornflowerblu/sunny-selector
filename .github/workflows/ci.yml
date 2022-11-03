@@ -15,45 +15,45 @@ jobs:
       - name: build the stack
         run: docker-compose up -d
 
-  build_and_deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Verify Change Logs
-        run: node common/scripts/install-run-rush.js change --verify
-      - name: Rush Install
-        run: node common/scripts/install-run-rush.js install
-      - name: Rush Rebuild
-        run: node common/scripts/install-run-rush.js rebuild --verbose
-      - name: Rush Deploy
-        run: |
-          npm install -g @microsoft/rush
-          rush deploy
+  # build_and_deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 2
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #     - name: Verify Change Logs
+  #       run: node common/scripts/install-run-rush.js change --verify
+  #     - name: Rush Install
+  #       run: node common/scripts/install-run-rush.js install
+  #     - name: Rush Rebuild
+  #       run: node common/scripts/install-run-rush.js rebuild --verbose
+  #     - name: Rush Deploy
+  #       run: |
+  #         npm install -g @microsoft/rush
+  #         rush deploy
 
-      # Install doctl
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+  #     # Install doctl
+  #     - name: Install doctl
+  #       uses: digitalocean/action-doctl@v2
+  #       with:
+  #         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      # Log in to Digital Ocean
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 1200
+  #     # Log in to Digital Ocean
+  #     - name: Log in to DigitalOcean Container Registry with short-lived credentials
+  #       run: doctl registry login --expiry-seconds 1200
 
-      # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
-      - name: Build containers
-        run: |
-          cd common/deploy/
-          docker build -f hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook ./hasura-auth-webhook
+  #     # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
+  #     - name: Build containers
+  #       run: |
+  #         cd common/deploy/
+  #         docker build -f hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook ./hasura-auth-webhook
 
-      - name: Tag containers with $GITHUB_SHA.
-        run: docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
+  #     - name: Tag containers with $GITHUB_SHA.
+  #       run: docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
 
-      - name: Push images to DigitalOcean Container Registry
-        run: docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
+  #     - name: Push images to DigitalOcean Container Registry
+  #       run: docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
