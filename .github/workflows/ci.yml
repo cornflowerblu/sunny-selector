@@ -29,10 +29,12 @@ jobs:
         run: node common/scripts/install-run-rush.js change --verify
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
-      - name: Rush rebuild
+      - name: Rush Rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose
       - name: Rush Deploy
-        run: npx rush deploy
+        run: |
+          npm install -g @microsoft/rush
+          rush deploy
 
       # Install doctl.
       - name: Install doctl
