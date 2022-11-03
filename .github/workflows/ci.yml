@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 18
 
-      - name: build the stack
+      - name: Build the stack and Run Tests
         run: |
           npm install -g @microsoft/rush
           cd app/sunny-nextjs
@@ -24,12 +24,7 @@ jobs:
           cd ../../
           rush update
           npm run compose:up
-          npm run test
-
-      - name: Test
-        uses: cypress-io/github-action@v4.2.0
-        with:
-          browser: chrome
+          npm run test:ci
 
       - name: Delete Video
         run: rm -rf ./cypress/videos

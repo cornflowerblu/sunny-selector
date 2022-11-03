@@ -1,6 +1,7 @@
 {
   "scripts": {
     "test": "npm run web:start & npx cypress open && kill -9  $(lsof -t -i:3000)",
+    "test:ci":"npm run web:start & npx cypress run && kill -9  $(lsof -t -i:3000)",
     "compose:up": "docker compose up -d && ./wait-for-seed.sh && rush rebuild -t sunny-nextjs",
     "compose:down": "docker compose down -v",
     "compose:reset": "docker system prune -a --force",
