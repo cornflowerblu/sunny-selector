@@ -4,6 +4,8 @@
     "compose:down": "docker compose down -v",
     "compose:reset": "docker system prune -a --force",
     "web:start":"cd app/sunny-nextjs && npm start",
-    "web:dev": "cd app/sunny-nextjs && npm run dev"
+    "web:dev": "cd app/sunny-nextjs && npm run dev",
+    "episode:start": "cd app/episode-service && npm start",
+    "episode:dev": "cd app/episode-service && npm run dev"
   }
 }

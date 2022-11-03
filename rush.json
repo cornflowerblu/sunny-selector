@@ -331,8 +331,11 @@
     {
       "packageName": "sunny-nextjs",
       "projectFolder": "app/sunny-nextjs"
+    },
+    {
+      "packageName": "episode-service",
+      "projectFolder": "app/episode-service"
     }
-    
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)
