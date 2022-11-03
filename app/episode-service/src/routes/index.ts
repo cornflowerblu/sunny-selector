@@ -1,4 +1,4 @@
-import { hello } from './hello'
-import { bye } from './goodbye'
+import { hello } from './episode'
+import { guard } from './episode-guard'
 
-export const router = [hello, bye]
+export const router = [hello, guard]
