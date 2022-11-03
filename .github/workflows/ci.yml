@@ -48,7 +48,9 @@ jobs:
 
       # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
       - name: Build containers
-        run: docker build -f common/deploy/hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook .
+        run: |
+          cd common/deploy/
+          docker build -f hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook ./hasura-auth-webhook
 
       - name: Tag containers with $GITHUB_SHA.
         run: docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
