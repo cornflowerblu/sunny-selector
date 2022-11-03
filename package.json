@@ -1,13 +1,16 @@
 {
   "scripts": {
-    "test": "npm run web:start & echo 'Cypress Stuff...'",
-    "compose:up": "rush rebuild -T sunny-nextjs && docker compose up -d",
+    "test": "npm run web:start & npx cypress open && kill -9  $(lsof -t -i:3000)",
+    "compose:up": "docker compose up -d && ./wait-for-seed.sh && rush rebuild -t sunny-nextjs",
     "compose:down": "docker compose down -v",
     "compose:reset": "docker system prune -a --force",
-    "web:start":"cd app/sunny-nextjs && npm start",
+    "web:start": "cd app/sunny-nextjs && npm start",
     "web:dev": "cd app/sunny-nextjs && npm run dev",
     "episode:start": "cd app/episode-service && npm start",
     "episode:dev": "cd app/episode-service && npm run dev",
-    "h-auth-wh:start": "cd app/hasura-auth-webhook && npm start"
+    "hasura-auth:start": "cd app/hasura-auth-webhook && npm start"
+  },
+  "devDependencies": {
+    "cypress": "^10.11.0"
   }
 }
