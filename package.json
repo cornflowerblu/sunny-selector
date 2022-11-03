@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "compose:up": "docker compose up -d",
+    "test": "npm run web:start & echo 'Cypress Stuff...'",
+    "compose:up": "rush rebuild -T sunny-nextjs && docker compose up -d",
     "compose:down": "docker compose down -v",
     "compose:reset": "docker system prune -a --force",
     "web:start":"cd app/sunny-nextjs && npm start",
