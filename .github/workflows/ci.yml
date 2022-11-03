@@ -44,8 +44,7 @@ jobs:
 
       # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
       - name: Build images, tag, and push
-        run:
-          npm install -g @microsoft/rush \
+        run: npm install -g @microsoft/rush \
           rush deploy \
 
         # Hasura Auth Webhook
