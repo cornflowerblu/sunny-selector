@@ -46,24 +46,28 @@ jobs:
       - name: Rush Rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose -t episode-service -t hasura-auth-webhook
 
-      # # Install doctl
-      # - name: Install doctl
-      #   uses: digitalocean/action-doctl@v2
-      #   with:
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # Install doctl
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      # # Log in to Digital Ocean
-      # - name: Log in to DigitalOcean Container Registry with short-lived credentials
-      #   run: doctl registry login --expiry-seconds 1200
+      # Log in to Digital Ocean
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
 
-      # # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
-      # - name: Build containers
-      #   run: |
-      #     cd common/deploy/
-      #     docker build -f app/hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook ./app/hasura-auth-webhook
+      # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
+      - name: Build containers
+        run: |
+          docker build -f app/hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook ./app/hasura-auth-webhook
+          docker build -f app/episode-service/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/episode-service ./app/episode-service
 
-      # - name: Tag containers with $GITHUB_SHA.
-      #   run: docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
+      - name: Tag containers with $GITHUB_SHA.
+        run: |
+          docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
+          docker tag ${{ secrets.REGISTRY_NAME }}/episode-service ${{ secrets.REGISTRY_NAME }}/episode-service:$(echo $GITHUB_SHA | head -c7)
 
-      # - name: Push images to DigitalOcean Container Registry
-      #   run: docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
+      - name: Push images to DigitalOcean Container Registry
+        run: |
+          docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
+          docker push --all-tags ${{ secrets.REGISTRY_NAME }}/episode-service
