@@ -46,8 +46,7 @@ jobs:
       - name: Build images, tag, and push
         run: |
           npm install -g @microsoft/rush
-          rush deploy         
-      # Hasura Auth Webhook
+          rush deploy
           docker build -f common/deploy/hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook .
           docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
           docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
