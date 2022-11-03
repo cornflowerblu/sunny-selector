@@ -15,7 +15,8 @@ jobs:
       - name: build the stack
         run: docker-compose up -d
 
-  build:
+  build_and_deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,3 +31,25 @@ jobs:
         run: node common/scripts/install-run-rush.js install
       - name: Rush rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose
+      - name: Rush Deploy
+        run: rush deploy
+
+      # Install doctl.
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      # Log in to Digital Ocean
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+
+      # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
+      - name: Build hasura-auth-webhook image
+        run: docker build -f common/deploy/hasura-auth-webhook/Dockerfile -t ${{ secrets.REGISTRY_NAME }}/auth-webhook .
+
+      - name: Tag container with $GITHUB_SHA.
+        run: docker tag ${{ secrets.REGISTRY_NAME }}/auth-webhook ${{ secrets.REGISTRY_NAME }}/auth-webhook:$(echo $GITHUB_SHA | head -c7)
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push --all-tags ${{ secrets.REGISTRY_NAME }}/auth-webhook
