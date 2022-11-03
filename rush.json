@@ -332,6 +332,7 @@
       "packageName": "sunny-nextjs",
       "projectFolder": "sunny-nextjs"
     }
+    
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)
