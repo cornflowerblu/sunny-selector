@@ -19,6 +19,7 @@ jobs:
       - name: build the stack
         run: |
           npm install -g @microsoft/rush
+          rush update
           npm run compose:up
 
       - name: Test
