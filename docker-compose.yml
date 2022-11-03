@@ -49,15 +49,15 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       HASURA_GRAPHQL_AUTH_HOOK: http://hasura-webhook-auth:8000/api/auth
 
-  graphql-cli:
-    image: ubuntu
-    volumes:
-      - ./hasura/init.sh:/init.sh
-      - ./hasura/config:/hasura
-    entrypoint: sh -c "/init.sh"
-    depends_on:
-      - 'db'
-      - 'graphql-engine'
+  # graphql-cli:
+  #   image: ubuntu
+  #   volumes:
+  #     - ./hasura/init.sh:/init.sh
+  #     - ./hasura/config:/hasura
+  #   entrypoint: sh -c "/init.sh"
+  #   depends_on:
+  #     - 'db'
+  #     - 'graphql-engine'
 
 volumes:
   cache:
