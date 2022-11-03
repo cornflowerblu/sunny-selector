@@ -326,11 +326,11 @@
   "projects": [
     {
       "packageName": "hasura-auth-webhook",
-      "projectFolder": "hasura-auth-webhook"
+      "projectFolder": "app/hasura-auth-webhook"
     },
     {
       "packageName": "sunny-nextjs",
-      "projectFolder": "sunny-nextjs"
+      "projectFolder": "app/sunny-nextjs"
     }
     
     // {
