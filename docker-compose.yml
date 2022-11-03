@@ -1,10 +1,10 @@
 version: "3.9"
 
-x-common-variables: &common-variables
-  REDIS_URL: redis://default:redispw@redis:6379
-  GRAPHQL_ADMIN_SECRET: myadminsecretkey
-  GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
-  REST_URL: http://localhost:8080/api/rest
+# x-common-variables: &common-variables
+#   REDIS_URL: redis://default:redispw@redis:6379
+#   GRAPHQL_ADMIN_SECRET: myadminsecretkey
+#   GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+#   REST_URL: http://localhost:8080/api/rest
 
 services:
   hasura-auth-webhook:
@@ -47,31 +47,17 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      HASURA_GRAPHQL_AUTH_HOOK: http://hasura-webhook-auth:8000/api/auth
+      HASURA_GRAPHQL_AUTH_HOOK: http://hasura-auth-webhook:8000/api/auth
 
-  web:
-    image: web
-    build: ./sunny-nextjs
-    ports:
-      - "3000:3000"
-    environment:
-      API_URL: http://graphql-engine:8080/api/rest/show/950e38a3-3242-44dc-8585-fd30ced6627e
-      GRAPHQL_SECRET: myadminsecretkey
-      AUTH_HOOK_API_KEY: 123456
-      REST_URL: http://graphql-engine:8080/api/rest
+  graphql-cli:
+    image: ubuntu
+    volumes:
+      - ./hasura/init.sh:/init.sh
+      - ./hasura/config:/hasura
+    entrypoint: sh -c "/init.sh"
     depends_on:
-      - graphql-engine
-      - db
-
-  # graphql-cli:
-  #   image: ubuntu
-  #   volumes:
-  #     - ./hasura/init.sh:/init.sh
-  #     - ./hasura/config:/hasura
-  #   entrypoint: sh -c "/init.sh"
-  #   depends_on:
-  #     - 'db'
-  #     - 'graphql-engine'
+      - "db"
+      - "graphql-engine"
 
 volumes:
   cache:

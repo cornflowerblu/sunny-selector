@@ -4,7 +4,7 @@ var router = express.Router()
 router.get('/auth', function (req, res, next) {
   const { hasura_api_key } = req.headers
 
-  if (hasura_api_key === process.env.HASURA_API_KEY) {
+  if (hasura_api_key == process.env.HASURA_API_KEY) {
     const response = {
       'X-Hasura-Role': 'readonly',
       'X-Timestamp': new Date().toISOString(),
