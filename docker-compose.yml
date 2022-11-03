@@ -16,6 +16,13 @@ services:
       HASURA_API_KEY: 123456
     command: ["node", "./bin/www"]
 
+  episode-service:
+    image: episode-service
+    build: ./app/episode-service
+    ports:
+      - "8001:8001"
+    command: ["node", "./dist/server.js"]
+
   redis:
     image: redis
     ports:
