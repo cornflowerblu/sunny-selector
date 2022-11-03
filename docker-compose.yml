@@ -9,7 +9,7 @@ version: "3.9"
 services:
   hasura-auth-webhook:
     image: hasura-auth-webhook
-    build: ./hasura-auth-webhook
+    build: ./app/hasura-auth-webhook
     ports:
       - "8000:8000"
     environment:
