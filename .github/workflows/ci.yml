@@ -19,6 +19,9 @@ jobs:
       - name: build the stack
         run: |
           npm install -g @microsoft/rush
+          cd app/sunny-nextjs
+          mv local.env .env
+          cd ../../
           rush update
           npm run compose:up
 
