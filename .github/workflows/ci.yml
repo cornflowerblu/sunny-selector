@@ -32,7 +32,7 @@ jobs:
       - name: Rush rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose
       - name: Rush Deploy
-        run: rush deploy
+        run: npx rush deploy
 
       # Install doctl.
       - name: Install doctl
