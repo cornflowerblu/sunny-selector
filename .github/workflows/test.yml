@@ -1,0 +1,29 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - "main"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build the stack and Run Tests
+        run: |
+          npm install -g @microsoft/rush
+          cd app/sunny-nextjs
+          mv local.env .env
+          cd ../../
+          rush update
+          npm run compose:up
+          npm install
+          npm run test:ci
+
+      - name: Delete Video
+        run: rm -rf ./cypress/videos
