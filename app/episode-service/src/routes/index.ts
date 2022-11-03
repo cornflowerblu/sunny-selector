@@ -1,9 +1,4 @@
-import express, { Request, Response } from 'express'
+import { hello } from './hello'
+import { bye } from './goodbye'
 
-const router = express.Router()
-
-router.get('/hello', (req: Request, res: Response) => {
-  res.send('Hello World!').status(200)
-})
-
-module.exports = router
+export const router = [hello, bye]
