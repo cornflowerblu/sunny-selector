@@ -22,7 +22,7 @@ export default function Login() {
 
     const JSONdata = JSON.stringify(data)
 
-    const endpoint = 'http://localhost:8001/api/login'
+    const endpoint = process.env.EPISODE_URL + '/api/login'
 
     const options = {
       method: 'POST',
