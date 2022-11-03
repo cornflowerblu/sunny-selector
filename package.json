@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "compose:up": "docker compose up -d",
+    "compose:down": "docker compose down -v",
+    "compose:reset": "docker system prune -a --force"
+  }
+}
