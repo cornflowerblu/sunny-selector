@@ -22,7 +22,7 @@ export default function Login() {
 
     const JSONdata = JSON.stringify(data)
 
-    const endpoint = process.env.EPISODE_URL + '/api/login'
+    const endpoint = process.env.NEXT_PUBLIC_EPISODE_URL + '/api/login'
 
     const options = {
       method: 'POST',
