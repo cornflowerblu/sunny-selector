@@ -8,7 +8,7 @@
     "web:dev": "cd app/sunny-nextjs && npm run dev",
     "episode:start": "cd app/episode-service && npm start",
     "episode:dev": "cd app/episode-service && npm run dev",
-    "h-auth-wh:start": "cd app/hasura-auth-webhook && npm start"
+    "hasura-auth:start": "cd app/hasura-auth-webhook && npm start"
   },
   "devDependencies": {
     "cypress": "^10.11.0"
