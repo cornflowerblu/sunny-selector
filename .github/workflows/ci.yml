@@ -44,9 +44,7 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush Rebuild
-        run: |
-          rm -rf app/sunny-nextjs
-          node common/scripts/install-run-rush.js rebuild --verbose
+        run: node common/scripts/install-run-rush.js rebuild --verbose
 
       # # Install doctl
       # - name: Install doctl
