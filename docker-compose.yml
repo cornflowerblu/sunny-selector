@@ -1,0 +1,64 @@
+version: '3.9'
+
+x-common-variables: &common-variables
+  REDIS_URL: redis://default:redispw@redis:6379
+  GRAPHQL_ADMIN_SECRET: myadminsecretkey
+  GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+  REST_URL: http://localhost:8080/api/rest
+
+services:
+  hasura-auth-webhook:
+    image: hasura-auth-webhook
+    build: ./hasura-auth-webhook
+    ports:
+      - '8000:8000'
+    environment:
+      HASURA_API_KEY: 123456
+    command: ['node', './bin/www']
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    environment:
+      - REDIS_PASSWORD=redispw
+
+  db:
+    image: postgres
+    ports:
+      - '5555:5432'
+    environment:
+      POSTGRES_PASSWORD: goares
+      POSTGRES_DB: shuffle
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.12.0
+    ports:
+      - '8080:8080'
+    depends_on:
+      - 'db'
+    restart: always
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:goares@db:5432/shuffle
+      DATABASE_URL: postgres://postgres:goares@db:5432/shuffle
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+      HASURA_GRAPHQL_DEV_MODE: 'true'
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_AUTH_HOOK: http://hasura-webhook-auth:8000/api/auth
+
+  graphql-cli:
+    image: ubuntu
+    volumes:
+      - ./hasura/init.sh:/init.sh
+      - ./hasura/config:/hasura
+    entrypoint: sh -c "/init.sh"
+    depends_on:
+      - 'db'
+      - 'graphql-engine'
+
+volumes:
+  cache:
+    driver: local
