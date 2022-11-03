@@ -24,6 +24,7 @@ jobs:
           cd ../../
           rush update
           npm run compose:up
+          npm install
           npm run test:ci
 
       - name: Delete Video
