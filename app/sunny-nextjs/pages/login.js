@@ -32,10 +32,9 @@ export default function Login() {
       body: JSONdata,
     }
 
-    let rawData
     try {
-      rawData = await fetch(endpoint, options)
-      setResponse(await rawData.json())
+      const res = await fetch(endpoint, options)
+      setResponse(await res.json())
     } catch (error) {
       console.log(error)
       return alert('Failed to fetch, check route.')
